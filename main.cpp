@@ -49,10 +49,9 @@ unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
 返回变化后的单词
 */
-string transform(string word) // TO BE COMPLETED
+int is_stop_word(string word) // TO BE COMPLETED
 {
-    
-    return word;
+    return 0;
 }
 
 /*需求：判断是否为stop word，是则返回1，不是返回0*/
