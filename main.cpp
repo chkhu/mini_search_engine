@@ -24,6 +24,18 @@ public:
     }
     void print() // TO BE COMPLETED
     {
+        cout << "The total number is " << count << "." << endl;
+        cout << "Show more details?(y/n)";
+        string y_n;
+        cin >> y_n;
+        if (y_n == "y")
+        {
+            cout << "ADDRESS\t\t\tID" << endl;
+            for (auto it : address)
+            {
+                cout << it.first << "\t" << it.second << endl;
+            }
+        }
     }
 };
 
@@ -31,9 +43,11 @@ unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
 int is_stop_word(string word) // TO BE COMPLETED
 {
+    return 0;
 }
 string transform(string word) // TO BE COMPLETED
 {
+    return word;
 }
 void analysis(string file)
 {
@@ -55,6 +69,7 @@ void analysis(string file)
             hash_table[temp].addresspp(file, id);
         }
     }
+    infile.close();
 }
 void getFiles(string path, vector<string> &files)
 {
@@ -104,6 +119,8 @@ int main()
         {
             hash_table[q_word].print();
         }
+        cin >> choice;
     }
     return 0;
 }
+
