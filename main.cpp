@@ -51,6 +51,7 @@ unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 */
 string transform(string word) // TO BE COMPLETED
 {
+    
     return word;
 }
 
