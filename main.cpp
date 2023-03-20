@@ -22,7 +22,7 @@ public:
     {
         address.emplace_back(make_pair(addr, id));
     }
-    void print() // TO BE COMPLETED
+    void print()
     {
         cout << "The total number is " << count << "." << endl;
         cout << "Show more details?(y/n)";
@@ -41,14 +41,26 @@ public:
 
 unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
-int is_stop_word(string word) // TO BE COMPLETED
-{
-    return 0;
-}
+/*
+需求：
+1. 去掉末尾的标点符号
+2. 大小写转换
+3. 词形变换
+
+返回变化后的单词
+*/
 string transform(string word) // TO BE COMPLETED
 {
     return word;
 }
+
+/*需求：判断是否为stop word，是则返回1，不是返回0*/
+int is_stop_word(string word) // TO BE COMPLETED
+{
+    return 0;
+}
+
+/*统计分析文件中的所有单词*/
 void analysis(string file)
 {
     ifstream infile;
@@ -71,6 +83,8 @@ void analysis(string file)
     }
     infile.close();
 }
+
+/*读取文件夹下的所有文件的文件路径及文件名*/
 void getFiles(string path, vector<string> &files)
 {
     long hFile = 0;
@@ -96,6 +110,7 @@ void getFiles(string path, vector<string> &files)
         _findclose(hFile);
     }
 }
+
 int main()
 {
     string basedir = "text_source";
@@ -123,4 +138,3 @@ int main()
     }
     return 0;
 }
-
