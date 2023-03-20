@@ -55,6 +55,7 @@ void analysis(string file)
             hash_table[temp].addresspp(file, id);
         }
     }
+    infile.close();
 }
 void getFiles(string path, vector<string> &files)
 {
