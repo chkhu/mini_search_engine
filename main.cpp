@@ -1,4 +1,4 @@
-#include "stemmer/porter2_stemmer.h"
+#include "porter2_stemmer.h"
 #include <cstring>
 #include <fstream>
 #include <io.h>
@@ -8,11 +8,15 @@
 #include <vector>
 
 using namespace std;
+/*
+ * TO BE REPLACED
+ */
+
 class word_info
 {
 
     int count;
-    vector<pair<string, int>> address; // TO BE REPLACED
+    vector<pair<string, int>> address; //
 
 public:
     void countpp()
@@ -40,8 +44,14 @@ public:
     }
 };
 
-unordered_map<string, class word_info> hash_table; // TO BE REPLACED
-string stop_word[] = {"he", "they", "o"};
+// store the word
+unordered_map<string, class word_info> hash_table;
+// store the stop_word
+vector<string> stop_word;
+
+/*
+ * Usage: stem the word
+ */
 
 string stemming(string word)
 {
@@ -50,13 +60,11 @@ string stemming(string word)
     return word;
 }
 /*
-需求：
-1. 去掉末尾的标点符号
-2. 大小写转换
-3. 词形变换
-返回变化后的单词
-*/
-string transform(string word) // TO BE COMPLETED
+ * Function: transform()
+ * Usage: select the word from special characters and numbers.
+ *        change all words into lowercase words.
+ */
+string transform(string word)
 {
     string temp = word;
     for (int i = 0; i < temp.length(); i++)
@@ -71,8 +79,33 @@ string transform(string word) // TO BE COMPLETED
     return temp;
 }
 
-/*需求：判断是否为stop word，是则返回1，不是返回0*/
-int is_stop_word(string word) // TO BE COMPLETED
+/*
+ * Function: add_stop_word()
+ * Usage: add the stop word into the stop word list.
+ */
+void add_stop_word()
+{
+
+    ifstream f;
+    f.open("word.txt", ios::in);
+
+    int stop_f;
+    string word;
+
+    while (!f.eof())
+    {
+        f >> word;
+        stop_word.push_back(word);
+    }
+
+    f.close();
+}
+
+/*
+ * Function: is_stop_word()
+ * Usage: judge whether the word is a stop word.
+ */
+int is_stop_word(string word)
 {
     int yes = 0;
     for (auto i : stop_word)
@@ -86,7 +119,10 @@ int is_stop_word(string word) // TO BE COMPLETED
     return yes;
 }
 
-/*统计分析文件中的所有单词*/
+/*
+ * Function: analysis()
+ * Usage: analysis every word from the file and add it into the hash_table
+ */
 void analysis(string file)
 {
     ifstream infile;
@@ -110,7 +146,10 @@ void analysis(string file)
     infile.close();
 }
 
-/*读取文件夹下的所有文件的文件路径及文件名*/
+/*
+ * Function: getFiles()
+ * Usage: read all sub files under the parent file.
+ */
 void getFiles(string path, vector<string> &files)
 {
     long long hFile = 0;
@@ -139,19 +178,29 @@ void getFiles(string path, vector<string> &files)
 
 int main()
 {
+    cout << "Please wait for the program to run." << endl;
+
+    add_stop_word();
+
     string basedir = "text_source";
     vector<string> files;
+
     getFiles(basedir, files);
     int filenum = files.size();
+
     for (int i = 0; i < filenum; i++)
     {
         analysis(files[i]);
     }
-    string prompt_info = "Press 1 to inquire, 2 to exit :";
+
+    string prompt_info = "Press 1 to inquire, 2 to exit :"; // select the choice
     cout << prompt_info;
+
     int choice;
     cin >> choice;
+
     string q_word;
+
     while (choice == 1)
     {
         cout << "Enter the word please :";
