@@ -1,3 +1,4 @@
+#include "stemmer/porter2_stemmer.h"
 #include <cstring>
 #include <fstream>
 #include <io.h>
@@ -41,17 +42,32 @@ public:
 
 unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
+string stemming(string word)
+{
+    Porter2Stemmer::trim(word);
+    Porter2Stemmer::stem(word);
+    return word;
+}
 /*
 需求：
 1. 去掉末尾的标点符号
 2. 大小写转换
 3. 词形变换
-
 返回变化后的单词
 */
-int is_stop_word(string word) // TO BE COMPLETED
+string transform(string word) // TO BE COMPLETED
 {
-    return 0;
+    string temp = word;
+    for (int i = 0; i < temp.length(); i++)
+    {
+        temp[i] = tolower(temp[i]);
+    }
+    while ((temp[temp.length() - 1] > 'z' || temp[temp.length() - 1] < 'a') && (temp.length() > 1) && (temp[temp.length() - 1] > '9' || temp[temp.length() - 1] < '0'))
+    {
+        temp.erase(temp.size() - 1, 1);
+    }
+    temp = stemming(temp);
+    return temp;
 }
 
 /*需求：判断是否为stop word，是则返回1，不是返回0*/
