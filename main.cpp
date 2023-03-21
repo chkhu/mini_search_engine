@@ -14,6 +14,10 @@ class word_info
     vector<pair<string, int>> address; // TO BE REPLACED
 
 public:
+    int cnt()
+    {
+        return count;
+    }
     void countpp()
     {
         count++;
@@ -41,6 +45,10 @@ public:
 
 unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
+string stemming(string word)
+{
+    return word;
+}
 /*
 需求：
 1. 去掉末尾的标点符号
@@ -49,9 +57,19 @@ unordered_map<string, class word_info> hash_table; // TO BE REPLACED
 
 返回变化后的单词
 */
-int is_stop_word(string word) // TO BE COMPLETED
+string transform(string word) // TO BE COMPLETED
 {
-    return 0;
+    string temp = word;
+    for (int i = 0; i < temp.length(); i++)
+    {
+        temp[i] = tolower(temp[i]);
+    }
+    while ((temp[temp.length() - 1] > 'z' || temp[temp.length() - 1] < 'a') && (temp.length() > 1) && (temp[temp.length() - 1] > '9' || temp[temp.length() - 1] < '0'))
+    {
+        temp.erase(temp.size() - 1, 1);
+    }
+    temp = stemming(temp);
+    return temp;
 }
 
 /*需求：判断是否为stop word，是则返回1，不是返回0*/
@@ -77,6 +95,7 @@ void analysis(string file)
         if (!is_stop_word(temp))
         {
             temp = transform(temp);
+            // cout << temp << " ";
             hash_table[temp].countpp();
             hash_table[temp].addresspp(file, id);
         }
@@ -121,20 +140,31 @@ int main()
     {
         analysis(files[i]);
     }
-    string prompt_info = "Press 1 to inquiry, 2 to exit :";
-    cout << prompt_info;
-    int choice;
-    cin >> choice;
-    string q_word;
-    while (choice == 1)
+    int c;
+    cout << "Output Boundary:";
+    cin >> c;
+    for (auto it : hash_table)
     {
-        cin >> q_word;
-        q_word = transform(q_word);
-        if (!(hash_table.find(q_word) == hash_table.end()))
+        if (it.second.cnt() > c)
         {
-            hash_table[q_word].print();
+            cout << it.first << " " << it.second.cnt() << endl;
         }
-        cin >> choice;
     }
+    // string prompt_info = "Press 1 to inquiry, 2 to exit :";
+    // cout << prompt_info;
+    // int choice;
+    // cin >> choice;
+    // string q_word;
+    // while (choice == 1)
+    // {
+    //     cin >> q_word;
+    //     q_word = transform(q_word);
+    //     if (!(hash_table.find(q_word) == hash_table.end()))
+    //     {
+    //         hash_table[q_word].print();
+    //     }
+    //     cout << prompt_info;
+    //     cin >> choice;
+    // }
     return 0;
 }
