@@ -31,7 +31,7 @@ public:
         cin >> y_n;
         if (y_n == "y")
         {
-            cout << "ADDRESS\t\t\tID" << endl;
+            cout << "FILE ADDRESS\t\t\tID IN FILE" << endl;
             for (auto it : address)
             {
                 cout << it.first << "\t" << it.second << endl;
@@ -41,6 +41,7 @@ public:
 };
 
 unordered_map<string, class word_info> hash_table; // TO BE REPLACED
+string stop_word[] = {"he", "they", "o"};
 
 string stemming(string word)
 {
@@ -73,7 +74,16 @@ string transform(string word) // TO BE COMPLETED
 /*需求：判断是否为stop word，是则返回1，不是返回0*/
 int is_stop_word(string word) // TO BE COMPLETED
 {
-    return 0;
+    int yes = 0;
+    for (auto i : stop_word)
+    {
+        if (word == i)
+        {
+            yes = 1;
+            break;
+        }
+    }
+    return yes;
 }
 
 /*统计分析文件中的所有单词*/
@@ -90,9 +100,9 @@ void analysis(string file)
     while (infile >> temp)
     {
         id++;
+        temp = transform(temp);
         if (!is_stop_word(temp))
         {
-            temp = transform(temp);
             hash_table[temp].countpp();
             hash_table[temp].addresspp(file, id);
         }
@@ -103,7 +113,7 @@ void analysis(string file)
 /*读取文件夹下的所有文件的文件路径及文件名*/
 void getFiles(string path, vector<string> &files)
 {
-    long hFile = 0;
+    long long hFile = 0;
     struct _finddata_t fileinfo;
     string pathp;
     if ((hFile = _findfirst(pathp.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
@@ -137,19 +147,29 @@ int main()
     {
         analysis(files[i]);
     }
-    string prompt_info = "Press 1 to inquiry, 2 to exit :";
+    string prompt_info = "Press 1 to inquire, 2 to exit :";
     cout << prompt_info;
     int choice;
     cin >> choice;
     string q_word;
     while (choice == 1)
     {
+        cout << "Enter the word please :";
         cin >> q_word;
         q_word = transform(q_word);
         if (!(hash_table.find(q_word) == hash_table.end()))
         {
             hash_table[q_word].print();
         }
+        else if (is_stop_word(q_word))
+        {
+            cout << "The word is a stop word." << endl;
+        }
+        else
+        {
+            cout << "The inquiry result is empty." << endl;
+        }
+        cout << prompt_info;
         cin >> choice;
     }
     return 0;
