@@ -255,7 +255,7 @@ int main()
             {
                 int h = 0;
                 // c = transform(c);
-                if (hash_table.find(c) == hash_table.end())
+                if (hash_table.find(c) == hash_table.end() && !is_stop_word(c))
                 {
                     not_found = 1;
                     // cout << "b" << endl;
