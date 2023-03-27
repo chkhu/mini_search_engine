@@ -42,6 +42,10 @@ public:
             }
         }
     }
+    vector<pair<string, int>> get_va()
+    {
+        return address;
+    }
 };
 
 // store the word
@@ -203,20 +207,103 @@ int main()
 
     while (choice == 1)
     {
-        cout << "Enter the word please :";
-        cin >> q_word;
-        q_word = transform(q_word);
-        if (!(hash_table.find(q_word) == hash_table.end()))
+        cout << "Enter the word or phrase please :";
+        // cin >> q_word;
+        getline(cin, q_word);
+        getline(cin, q_word);
+
+        unordered_map<string, int> output;
+        vector<string> result;
+        string word = "";
+        for (auto c : q_word)
         {
-            hash_table[q_word].print();
+            if (c == ' ')
+            {
+                word = transform(word);
+                result.push_back(word);
+                word = "";
+            }
+            else
+            {
+                word += c;
+            }
         }
-        else if (is_stop_word(q_word))
+        word = transform(word);
+        result.push_back(word);
+
+        int first = 1;
+        int not_found = 0;
+        if (result.size() == 1)
         {
-            cout << "The word is a stop word." << endl;
+            q_word = transform(q_word);
+            if (!(hash_table.find(q_word) == hash_table.end()))
+            {
+                hash_table[q_word].print();
+            }
+            else if (is_stop_word(q_word))
+            {
+                cout << "The word is a stop word." << endl;
+            }
+            else
+            {
+                cout << "The inquiry result is empty." << endl;
+            }
         }
         else
         {
-            cout << "The inquiry result is empty." << endl;
+            for (auto c : result)
+            {
+                int h = 0;
+                // c = transform(c);
+                if (hash_table.find(c) == hash_table.end())
+                {
+                    not_found = 1;
+                    // cout << "b" << endl;
+                    break;
+                }
+                if (first)
+                {
+                    if (is_stop_word(c))
+                    {
+                        continue;
+                    }
+                    first = 0;
+                    for (auto it : hash_table[c].get_va())
+                    {
+                        output[it.first] = h;
+                    }
+                    h++;
+                }
+                else
+                {
+                    for (auto it : hash_table[c].get_va())
+                    {
+                        if (output[it.first] == h - 1)
+                            output[it.first] = h;
+                    }
+
+                    for (auto it : output)
+                    {
+                        if (it.second != h)
+                        {
+                            output.erase(it.first);
+                        }
+                    }
+                    h++;
+                }
+            }
+            if (not_found | output.empty())
+            {
+                cout << "The inquiry result is empty." << endl;
+            }
+            else
+            {
+                cout << "FILE ADDRESS" << endl;
+                for (auto it : output)
+                {
+                    cout << it.first << endl;
+                }
+            }
         }
         cout << prompt_info;
         cin >> choice;
